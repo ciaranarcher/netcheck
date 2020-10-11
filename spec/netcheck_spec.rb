@@ -22,26 +22,50 @@ module Netcheck
         HEREDOC
       end
 
-      it 'raises an error when parsing non-ping output' do
-        expect { PingParser.new(non_ping_output) }.to raise_error(RuntimeError, /error processing ping response/)
-      end
+      describe 'failure' do
+        let(:failed_ping) { PingParser.new(non_ping_output) }
 
-      it 'succeeds when parsing ping output' do
-        expect(PingParser.new(ping_output)).to be_instance_of PingParser
-      end
-
-      describe ('reading stats') do
-        let(:parser) {  PingParser.new(ping_output) }
-
-        it 'reads the min value successfully' do
-          expect(parser.min).to equal 14.886
+        it 'is marked as unsuccessful' do
+          expect(failed_ping.success?).to be false
         end
-        # it 'reads the packet loss percentage successfully' do
-        #   expect(parser.packet_loss_percent).to equal 0.0
-        # end
-        # it 'reads the packet loss percentage successfully' do
-        #   expect(parser.packet_loss_percent).to equal 0.0
-        # end
+
+        it 'has an error set' do
+          expect(failed_ping.err).to match(/error processing ping response/)
+        end
+      end
+
+      describe 'success' do
+        let(:ping) {  PingParser.new(ping_output) }
+
+        it 'is marked as successful' do
+          expect(ping.success?).to be true
+        end
+
+        it 'has no error set' do
+          expect(ping.err).to be nil
+        end
+
+        describe ('reading stats') do
+          it 'reads the min value successfully' do
+            expect(ping.min).to eq(14.886)
+          end
+
+          it 'reads the avg value successfully' do
+            expect(ping.avg).to eq(33.055)
+          end
+
+          it 'reads the max value successfully' do
+            expect(ping.max).to eq(66.590)
+          end
+
+          it 'reads the stddev value successfully' do
+            expect(ping.stddev).to eq(23.740)
+          end
+
+          it 'reads the packet loss percentage successfully' do
+            expect(ping.packet_loss_percent).to eq(0.0)
+          end
+        end
       end
     end
   end

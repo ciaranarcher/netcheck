@@ -2,5 +2,9 @@
 $LOAD_PATH.unshift File.join(File.dirname(__FILE__), '..', 'lib')
 require 'netcheck'
 
-check = Netcheck::Check.new
-exit check.run
+if ARGV.empty?
+  STDERR.puts "Usage: netcheck <domain> e.g. netcheck google.com" if ARGV.empty?
+  exit(1)
+end
+
+exit Netcheck::Check.new.run_forever(ARGV[0].strip)
