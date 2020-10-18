@@ -42,7 +42,7 @@ module Netcheck
         if ping.success?
           csv << [
             Time.now.utc.iso8601,
-            ping.success?,
+            1,
             ping.packet_loss_percent,
             ping.min,
             ping.avg,
@@ -52,7 +52,7 @@ module Netcheck
         else
           csv << [
             Time.now.utc.iso8601,
-            ping.success?,
+            0,
             "-",
             "-",
             "-",
