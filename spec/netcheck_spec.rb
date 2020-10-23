@@ -63,7 +63,7 @@ module Netcheck
           end
 
           it 'reads the packet loss percentage successfully' do
-            expect(ping.packet_loss_percent).to eq(0.0)
+            expect(ping.packet_loss_percent).to eq 0.0
           end
         end
       end
