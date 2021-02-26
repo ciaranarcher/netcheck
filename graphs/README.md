@@ -20,4 +20,4 @@ Example:
 gnuplot -e "csv='../output/google.ie.csv'" -p packetloss.gnuplot
 ```
 
-This should open the graph for you n a new window.
+This should open the graph for you in a new window.
